@@ -54,7 +54,7 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 #%%
 print("Loading dataset")
-from dataset import load_water
+from get_all_dataset import load_water
 
 train_loader, val_loader, test_loader, n_sensor = load_water(args.data_dir, \
                                                                 args.batch_size)
