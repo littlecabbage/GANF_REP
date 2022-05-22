@@ -8,7 +8,7 @@ import numpy as np
 
 # %%
 from torch.utils.data import DataLoader
-
+from datetime import datetime, timedelta
 
 def load_traffic(root, batch_size):
     """
@@ -71,12 +71,20 @@ class Traffic(Dataset):
 
         return torch.FloatTensor(data).transpose(0,1)
 
-def load_water(root, batch_size,label=False):
-    train_path = "/root/zengzihui/ISST/GANF/data/SWaT_Dataset_Normal_v1.csv"
-    test_path = "/root/zengzihui/ISST/GANF/data/SWaT_Dataset_Attack_v0.csv"
+def load_water(root, batch_size,label=False, beta = 0, times = 0):
+    if beta == 0 and times == 0:
+        train_path = "/root/zengzihui/ISST/GANF/data/SWaT_Dataset_Normal_v1.csv"
+        test_path = "/root/zengzihui/ISST/GANF/data/SWaT_Dataset_Attack_v0.csv"
+    if (beta != 0 and times == 0) or (beta == 0 and times != 0):
+        print(f"ERROR beta = {beta}, times = {times}")
+        exit()
+    if beta != 0 and times != 0:
+        train_path = f"/root/zengzihui/ISST/GANF/data/train_{beta}_{times}.csv"
+        test_path = f"/root/zengzihui/ISST/GANF/data/test_{beta}_{times}.csv"
 
-    train_data = pd.read_csv(train_path)
-    test_data = pd.read_csv(test_path)
+
+    train_data = pd.read_csv(train_path, index_col=0)
+    test_data = pd.read_csv(test_path, index_col=0)
 
 
     # data = pd.read_csv(root)
@@ -84,12 +92,15 @@ def load_water(root, batch_size,label=False):
 
     data = pd.concat([train_data, test_data])
 
+    # 1. Process time 
+    time_index = data.index.to_list()
+    time_index = [datetime.strptime(x, "%d/%m/%Y %H:%M:%S %p") for x in time_index]
+    time_index = [x - time_index[0] for x in time_index]
+    data.index = time_index
+
+    # 2. Process Label
     data = data.rename(columns={"Normal/Attack":"label"})
-    # data.label[data.label!="Normal"]=1
-    # data.label[data.label=="Normal"]=0
     data.label = data['label'].map({"Normal": 0,"Attack": 1})
-    data["Timestamp"] = pd.to_datetime(data["Timestamp"])
-    data = data.set_index("Timestamp")
 
     #%%
     feature = data.iloc[:,:51]
@@ -194,3 +205,4 @@ class WaterLabel(Dataset):
 if __name__ == "__main__":
     train_loader, val_loader, test_loader = load_water("", 128)
     # print(data.to_string())
+# %%

@@ -1,11 +1,76 @@
 #%%
+from ast import parse
 import os
 import argparse
 import torch
 from models.GANF import GANF
 import numpy as np
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score,f1_score, precision_score, recall_score
+from datetime import datetime
+
+
 # from data import fetch_dataloaders
+
+import pandas as pd
+
+import sys
+
+class Logger(object):
+    def __init__(self, file_name = 'temp.log', stream = sys.stdout) -> None:
+        self.terminal = stream
+        self.log = open(f'log/{file_name}', "a")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        pass
+
+# open log handler before print
+filename = f"{datetime.now()}"
+log_file_name = f"{filename}.log"
+sys.stdout = Logger(str(log_file_name))
+sys.stderr = Logger(str(log_file_name))
+
+def search_best_f1(label, predict):
+    """
+    It takes in a list of labels and a list of predictions, and returns the best F1 score, precision,
+    and recall, 
+    ** along with the threshold that produced the best F1 score **
+    
+    :param label: the actual labels of the data
+    :param predict: the predicted probabilities of the positive class
+    """
+    f1_best = 0
+
+    best_thr = -float("inf")
+    f1_list = []
+    pre_list = []
+    rec_list = []
+    thr_list = []
+
+    thresh_holds = set([round(x, 1) for x in predict])
+    for thr in thresh_holds:
+        predict_ = [0 if x < thr else 1 for x in predict]
+        f1, pre, rec = f1_score(label, predict_), precision_score(label, predict_), recall_score(label, predict_)
+
+        if f1 > f1_best:
+            
+            f1_best = f1;
+            f1_list.append(f1)
+            pre_list.append(pre)
+            rec_list.append(rec)
+            thr_list.append(thr)
+            # print(f"Best Threshold: {thr}")
+            # print("[f1 = {%.4f}, pre = {%.4f}, rec = {%.4f}]" % (f1, pre, rec))
+            best_thr = thr
+
+    
+
+    # return f1_best, f1_list, pre_list, rec_list
+    return best_thr, f1_best, pre_list[-1], rec_list[-1]
+
 
 
 parser = argparse.ArgumentParser()
@@ -38,6 +103,8 @@ parser.add_argument('--max_iter', type=int, default=20)
 parser.add_argument('--lambda1', type=float, default=0.0)
 parser.add_argument('--rho_init', type=float, default=1.0)
 parser.add_argument('--alpha_init', type=float, default=0.0)
+parser.add_argument('--beta', type = int, default=0)
+parser.add_argument('--times', type = int, default=0)
 
 args = parser.parse_known_args()[0]
 args.cuda = torch.cuda.is_available()
@@ -53,11 +120,11 @@ torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
 #%%
-print("Loading dataset")
+print(f"Loading dataset  beta = {args.beta}  times = {args.times}")
 from get_all_dataset import load_water
 
 train_loader, val_loader, test_loader, n_sensor = load_water(args.data_dir, \
-                                                                args.batch_size)
+                                                                args.batch_size, beta = args.beta, times = args.times)
 #%%
 
 rho = args.rho_init # default = 1.0
@@ -158,9 +225,15 @@ for _ in range(max_iter):
             roc_test = roc_auc_score(np.asarray(test_loader.dataset.label.values,dtype=int),loss_test)
             print('Epoch: {}, train -log_prob: {:.2f}, test -log_prob: {:.2f}, roc_val: {:.4f}, roc_test: {:.4f} ,h: {}'\
                     .format(epoch, np.mean(loss_train), np.mean(loss_val), roc_val, roc_test, h.item()))
+            
+            
+            best_thr, f1_best, pre, rec = search_best_f1(np.asarray(val_loader.dataset.label.values,dtype=int),loss_val)
+            print("[Best Threshold: {%.4f} f1 = {%.4f}, pre = {%.4f}, rec = {%.4f}]" % (best_thr, f1_best, pre, rec))
     
         print('rho: {}, alpha {}, h {}'.format(rho, alpha, h.item()))
         print('===========================================')
+
+        
         torch.save(A.data,os.path.join(save_path, "graph_{}.pt".format(epoch)))
         torch.save(model.state_dict(), os.path.join(save_path, "{}_{}.pt".format(args.name, epoch)))
 
@@ -230,6 +303,9 @@ for _ in range(30):
     roc_test = roc_auc_score(np.asarray(test_loader.dataset.label.values,dtype=int),loss_test)
     print('Epoch: {}, train -log_prob: {:.2f}, test -log_prob: {:.2f}, roc_val: {:.4f}, roc_test: {:.4f} ,h: {}'\
             .format(epoch, np.mean(loss_train), np.mean(loss_val), roc_val, roc_test, h.item()))
+    
+    best_thr, f1_best, pre, rec = search_best_f1(np.asarray(val_loader.dataset.label.values,dtype=int),loss_val)
+    print("[Best Threshold: {%.4f} f1 = {%.4f}, pre = {%.4f}, rec = {%.4f}]" % (best_thr, f1_best, pre, rec))
 
     if np.mean(loss_val) < loss_best:
         loss_best = np.mean(loss_val)

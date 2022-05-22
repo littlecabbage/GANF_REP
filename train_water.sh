@@ -1,4 +1,4 @@
-for seed in {18..20}
+for seed in {1..5}
 do 
     python -u train_water.py\
         --seed=${seed}\

@@ -1,0 +1,163 @@
+Namespace(alpha_init=0.0, batch_norm=False, batch_size=512, beta=3, cuda=True, data_dir='./data/SWaT_Dataset_Attack_v0.csv', graph='None', h_tol=0.0001, hidden_size=32, lambda1=0.0, log_interval=5, lr=0.002, max_iter=20, model='None', n_blocks=1, n_components=1, n_epochs=1, n_hidden=1, name='GANF_Water', output_dir='./checkpoint/model', rho_init=1.0, rho_max=1e+16, seed=18, times=3, weight_decay=0.0005)
+Loading dataset  beta = 3  times = 3
+Params:
+            n_blocks 1, 
+            input_size 1, 
+            hidden_size 32, 
+            n_hidden 1, 
+            cond_label_size=32, 
+            batch_norm=False
+            
+GANF(
+  (rnn): LSTM(1, 32, batch_first=True)
+  (gcn): GNN(
+    (lin_n): Linear(in_features=32, out_features=32, bias=True)
+    (lin_r): Linear(in_features=32, out_features=32, bias=False)
+    (lin_2): Linear(in_features=32, out_features=32, bias=True)
+  )
+  (nf): MAF(
+    (net): FlowSequential(
+      (0): MADE(
+        (net_input): MaskedLinear(in_features=1, out_features=32, bias=True, cond_features=32)
+        (net): Sequential(
+          (0): Tanh()
+          (1): MaskedLinear(in_features=32, out_features=32, bias=True)
+          (2): Tanh()
+          (3): MaskedLinear(in_features=32, out_features=2, bias=True)
+        )
+      )
+    )
+  )
+)
+-1.0506859 -3.2719076 1.9662966 -3.2722878
+Epoch: 1, train -log_prob: -1.53, test -log_prob: -3.14, roc_val: 0.7142, roc_test: 0.8835 ,h: 0.09414291381835938
+[Best Threshold: {-2.7000} f1 = {0.3740}, pre = {0.6626}, rec = {0.2605}]
+rho: 1.0, alpha 0.0, h 0.09414291381835938
+===========================================
+-1.9712642 -2.3434103 -0.69118494 -2.3794706
+Epoch: 2, train -log_prob: 0.99, test -log_prob: -2.26, roc_val: 0.5852, roc_test: 0.8402 ,h: 0.051662445068359375
+[Best Threshold: {-2.2000} f1 = {0.1532}, pre = {0.1039}, rec = {0.2913}]
+rho: 1.0, alpha 0.09414291381835938, h 0.051662445068359375
+===========================================
+-2.3911784 -3.2586637 -1.1254449 -3.2894278
+Epoch: 3, train -log_prob: -2.04, test -log_prob: -3.20, roc_val: 0.7163, roc_test: 0.8748 ,h: 0.0355682373046875
+[Best Threshold: {-3.0000} f1 = {0.2819}, pre = {0.4565}, rec = {0.2039}]
+rho: 10.0, alpha 0.09414291381835938, h 0.0355682373046875
+===========================================
+-2.1092954 -3.2526684 -0.9847269 -3.2925818
+Epoch: 4, train -log_prob: -0.29, test -log_prob: -3.16, roc_val: 0.6839, roc_test: 0.8703 ,h: 0.0269012451171875
+[Best Threshold: {-3.0000} f1 = {0.2774}, pre = {0.2765}, rec = {0.2783}]
+rho: 10.0, alpha 0.4498252868652344, h 0.0269012451171875
+===========================================
+-2.2054746 -2.880038 -1.4280287 -2.9068744
+Epoch: 5, train -log_prob: -0.40, test -log_prob: -2.82, roc_val: 0.6914, roc_test: 0.8711 ,h: 0.010074615478515625
+[Best Threshold: {-2.7000} f1 = {0.2924}, pre = {0.3676}, rec = {0.2427}]
+rho: 100.0, alpha 0.4498252868652344, h 0.010074615478515625
+===========================================
+-2.3964918 -3.479304 -1.340406 -3.4867291
+Epoch: 6, train -log_prob: -2.20, test -log_prob: -3.42, roc_val: 0.7127, roc_test: 0.8801 ,h: 0.00400543212890625
+[Best Threshold: {-3.2000} f1 = {0.2840}, pre = {0.5990}, rec = {0.1861}]
+rho: 100.0, alpha 1.4572868347167969, h 0.00400543212890625
+===========================================
+-0.9453933 -4.114052 2.3130152 -4.115404
+Epoch: 7, train -log_prob: -0.47, test -log_prob: -4.02, roc_val: 0.7131, roc_test: 0.8854 ,h: 0.00437164306640625
+[Best Threshold: {-3.6000} f1 = {0.3129}, pre = {0.4512}, rec = {0.2395}]
+rho: 100.0, alpha 1.8578300476074219, h 0.00437164306640625
+===========================================
+-2.54171 -3.514825 -1.4861715 -3.522157
+Epoch: 8, train -log_prob: 5.20, test -log_prob: -3.44, roc_val: 0.6605, roc_test: 0.8690 ,h: 0.004505157470703125
+[Best Threshold: {-3.3000} f1 = {0.3135}, pre = {0.3674}, rec = {0.2735}]
+rho: 1000.0, alpha 1.8578300476074219, h 0.004505157470703125
+===========================================
+-1.7862477 -3.5923452 0.2644774 -3.592382
+Epoch: 9, train -log_prob: -0.37, test -log_prob: -3.52, roc_val: 0.7340, roc_test: 0.8914 ,h: 0.00124359130859375
+[Best Threshold: {-3.3000} f1 = {0.3378}, pre = {0.4646}, rec = {0.2654}]
+rho: 10000.0, alpha 1.8578300476074219, h 0.00124359130859375
+===========================================
+-2.6560502 -3.0574086 -1.9679221 -3.0610087
+Epoch: 10, train -log_prob: 0.30, test -log_prob: -3.02, roc_val: 0.6771, roc_test: 0.8723 ,h: 0.00025177001953125
+[Best Threshold: {-2.9000} f1 = {0.2864}, pre = {0.5330}, rec = {0.1958}]
+rho: 10000.0, alpha 14.293743133544922, h 0.00025177001953125
+===========================================
+-1.9920572 -3.643171 -0.025538137 -3.643171
+Epoch: 11, train -log_prob: -2.17, test -log_prob: -3.58, roc_val: 0.7178, roc_test: 0.8888 ,h: 0.000179290771484375
+[Best Threshold: {-3.4000} f1 = {0.3400}, pre = {0.4495}, rec = {0.2735}]
+rho: 10000.0, alpha 16.811443328857422, h 0.000179290771484375
+===========================================
+-2.4354556 -3.2677362 -1.6651201 -3.268394
+Epoch: 12, train -log_prob: 0.33, test -log_prob: -3.23, roc_val: 0.7641, roc_test: 0.8969 ,h: 4.57763671875e-05
+[Best Threshold: {-3.1000} f1 = {0.3518}, pre = {0.4985}, rec = {0.2718}]
+rho: 100000.0, alpha 16.811443328857422, h 4.57763671875e-05
+===========================================
+Epoch: 13, train -log_prob: -1.77, test -log_prob: -3.28, roc_val: 0.7872, roc_test: 0.8902 ,h: 1.1444091796875e-05
+[Best Threshold: {-3.2000} f1 = {0.3512}, pre = {0.4095}, rec = {0.3074}]
+save model 13 epoch
+Epoch: 14, train -log_prob: -3.00, test -log_prob: -3.10, roc_val: 0.6859, roc_test: 0.8778 ,h: 3.814697265625e-06
+[Best Threshold: {-3.0000} f1 = {0.3250}, pre = {0.5458}, rec = {0.2314}]
+Epoch: 15, train -log_prob: -3.03, test -log_prob: -2.68, roc_val: 0.6396, roc_test: 0.8560 ,h: 0.0
+[Best Threshold: {-2.6000} f1 = {0.2618}, pre = {0.3131}, rec = {0.2249}]
+Epoch: 16, train -log_prob: -3.05, test -log_prob: -3.34, roc_val: 0.7646, roc_test: 0.8843 ,h: 0.0
+[Best Threshold: {-3.3000} f1 = {0.3597}, pre = {0.4302}, rec = {0.3091}]
+save model 16 epoch
+Epoch: 17, train -log_prob: -3.07, test -log_prob: -3.16, roc_val: 0.7391, roc_test: 0.8851 ,h: 0.0
+[Best Threshold: {-3.1000} f1 = {0.3431}, pre = {0.3962}, rec = {0.3026}]
+Epoch: 18, train -log_prob: -3.08, test -log_prob: -2.83, roc_val: 0.6722, roc_test: 0.8770 ,h: 0.0
+[Best Threshold: {-2.7000} f1 = {0.3289}, pre = {0.5326}, rec = {0.2379}]
+Epoch: 19, train -log_prob: -3.08, test -log_prob: -3.39, roc_val: 0.7222, roc_test: 0.8646 ,h: 0.0
+[Best Threshold: {-3.3000} f1 = {0.3495}, pre = {0.5000}, rec = {0.2686}]
+save model 19 epoch
+Epoch: 20, train -log_prob: -3.10, test -log_prob: -3.19, roc_val: 0.6878, roc_test: 0.8776 ,h: 0.0
+[Best Threshold: {-3.1000} f1 = {0.3204}, pre = {0.5469}, rec = {0.2265}]
+Epoch: 21, train -log_prob: -3.12, test -log_prob: -2.76, roc_val: 0.6335, roc_test: 0.8553 ,h: 0.0
+[Best Threshold: {-2.7000} f1 = {0.2784}, pre = {0.3788}, rec = {0.2201}]
+Epoch: 22, train -log_prob: -3.13, test -log_prob: -3.42, roc_val: 0.7426, roc_test: 0.8854 ,h: 0.0
+[Best Threshold: {-3.3000} f1 = {0.3453}, pre = {0.7433}, rec = {0.2249}]
+save model 22 epoch
+Epoch: 23, train -log_prob: -3.14, test -log_prob: -3.24, roc_val: 0.6987, roc_test: 0.8644 ,h: 0.0
+[Best Threshold: {-3.2000} f1 = {0.3270}, pre = {0.3493}, rec = {0.3074}]
+Epoch: 24, train -log_prob: -3.16, test -log_prob: -2.93, roc_val: 0.6714, roc_test: 0.8698 ,h: 0.0
+[Best Threshold: {-2.8000} f1 = {0.3066}, pre = {0.5432}, rec = {0.2136}]
+Epoch: 25, train -log_prob: -3.15, test -log_prob: -3.47, roc_val: 0.7311, roc_test: 0.8705 ,h: 0.0
+[Best Threshold: {-3.4000} f1 = {0.3484}, pre = {0.4749}, rec = {0.2751}]
+save model 25 epoch
+Epoch: 26, train -log_prob: -3.16, test -log_prob: -3.18, roc_val: 0.7119, roc_test: 0.8497 ,h: 0.0
+[Best Threshold: {-3.1000} f1 = {0.3090}, pre = {0.5696}, rec = {0.2120}]
+Epoch: 27, train -log_prob: -3.17, test -log_prob: -2.86, roc_val: 0.6200, roc_test: 0.8201 ,h: 0.0
+[Best Threshold: {-2.8000} f1 = {0.3100}, pre = {0.6813}, rec = {0.2006}]
+Epoch: 28, train -log_prob: -3.18, test -log_prob: -3.47, roc_val: 0.6849, roc_test: 0.8790 ,h: 0.0
+train_water.py:150: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  A = torch.tensor(init, requires_grad=True, device=device)
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+/root/anaconda3/envs/GANF/lib/python3.8/site-packages/sklearn/metrics/_classification.py:1318: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
